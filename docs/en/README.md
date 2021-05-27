@@ -1,60 +1,34 @@
-# Waline
+---
+home: true
+title: Waline
+heroImage: /logo.png
+actions:
+  - text: 💡 Get Started
+    link: /en/get-started.html
+    type: primary
 
-![](https://img.shields.io/npm/v/@waline/vercel?color=critical&logo=npm&style=flat-square)
-![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/@waline/client?style=flat-square&label=size)
-![npm](https://img.shields.io/npm/dm/@waline/vercel?style=flat-square)
-![GitHub](https://img.shields.io/github/license/lizheming/waline?style=flat-square)
-[ ![](https://img.shields.io/badge/telegram-walinejs-2ca5e0?logo=telegram&style=flat-square) ](https://t.me/walinejs)
+  - text: ℹ️ Intro
+    link: /en/intro.html
+    type: secondary
 
-A simple comment system with backend support fork from [Valine](https://valine.js.org). 
+features:
+  - title: Comment the way you like
+    details: Full Markdown support, with emoji, mathematical formulas and HTML embedding support
 
+  - title: LightWeight
+    details: 53kb gzip Size
 
-## Feature
+  - title: Improved Security
+    details: Content verification, anti-irrigation, protection of sensitive data, etc.
 
-- Fast
-- **Really** Safe
-- Support for full markdown syntax
-- Simple and lightweight
-- Deploy free!
-- Multiple deploy and storage service support, at least 48 deploy style choice!
+  - title: Login support
+    details: Besides anonymous comments, account registration is supported to maintain identity
 
-|                | Waline       |             |
-| -------------- | ------------ | ----------- |
-| **Client**     | **Server**   | **Storage** |
-| @waline/client | Vercel       | LeanCloud   |
-| MiniValine     | CloudBase    | CloudBase   |
-|                | Docker       | MongoDB     |
-|                | Virtual Host | MySQL       |
-|                |              | SQLite      |
-|                |              | PostgreSQL  |
+  - title: Completely free
+    details: Can be deployed on Vercel for free
 
+  - title: Easy to deploy
+    details: Multiple deployment methods and storage service support
 
-## Todo
-
-- ✅ Email notification
-- ✅ Wechat notification
-- ✅ Telegram notification
-- ✅ Akismet 
-- ✅ Article counter
-- ✅ i18n
-- ✅ Custom language
-- ✅ Login support
-- ✅ Comment management
-- ✅ Support delete comment
-- ✅ More database support
-- ✅ Limit the frequency of comments posted by IP
-- ✅ Comment keyword restrictions
-- ✅ IP disallow list
-- ✅ Duplicate content check
-- ✅ CloudBase deploy support
-- ✅ Social account login
-- AWS, GCP, Azure deploy support
-- Sitcky Comment
-- Comment Like
-
-That's **really** welcome to contribute waline!
-
-
-## License
-[GPL-2.0](https://github.com/lizheming/Waline/blob/master/LICENSE)
-
+footer: GPL-2.0 Licensed | Copyright © 2020-present lizheming
+---

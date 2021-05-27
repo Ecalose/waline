@@ -1,5 +1,3 @@
-
-
 # Waline Example
 
 This directory is a brief example of a [Waline](https://waline.js.org/) app that can be deployed with Vercel and zero configuration.
@@ -8,7 +6,7 @@ This directory is a brief example of a [Waline](https://waline.js.org/) app that
 
 Deploy your own Waline project with Vercel.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/lizheming/waline/tree/master/example)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/walinejs/waline/tree/master/example)
 
 ### How We Created This Example
 
@@ -41,4 +39,3 @@ You can deploy your new Waline project with a single command from your terminal 
 ```shell
 $ vercel
 ```
-

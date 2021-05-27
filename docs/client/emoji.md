@@ -1,59 +1,284 @@
 # 自定义表情
 
-## 基本用法
-Waline 支持`自定义表情`。默认内置`微博表情`
+你可以通过设置 `emoji` 选项自定义评论输入框的表情，你应该将它设置为包含*预设地址*或*预设配置对象*的**数组**。
+
+## 预设
+
+Waline 提供了一系列开箱即用的表情预设。你可以直接将它们添加到 emoji 选项中:
+
+- Alus
+
+  ```
+  https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/alus
+  ```
+
+- Bilibili
+
+  ```
+  https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/bilibili
+  ```
+
+- QQ
+
+  ```
+  https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/qq
+  ```
+
+- Tieba
+
+  ```
+  https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tieba
+  ```
+
+- Twemoji
+
+  - Emoji:
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-emoji
+    ```
+
+  ::: details Others
+
+  - Full: (Not recommand)
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw
+    ```
+
+  - People:
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-people
+    ```
+
+  - Body:
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-body
+    ```
+
+  - Flag:
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-flag
+    ```
+
+  - Food:
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-food
+    ```
+
+  - Natural:
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-natural
+    ```
+
+  - Object:
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-object
+    ```
+
+  - Sport:
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-sport
+    ```
+
+  - Symbol:
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-symbol
+    ```
+
+  - Time:
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-time
+    ```
+
+  - Travel:
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-travel
+    ```
+
+  - Weather:
+
+    ```
+    https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-weather
+    ```
+
+  :::
+
+- Weibo
+
+  ```
+  https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/weibo
+  ```
+
+::: tip 例子
 
 ```js
-new Waline({
-  el:'#waline',
+Waline({
+  el: '#waline',
   serverURL: '<YOUR SERVER URL>',
 
-  // 这里设置CDN, 默认微博表情CDN
-  emojiCDN: 'https://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/', 
-  // 表情title和图片映射
-  emojiMaps: {
-    "smile":"e3/2018new_weixioa02_org.png",
-    "lovely":"09/2018new_keai_org.png",
-    // ... 更多表情
-  } 
-})
+  // 设置 emoji 为微博与哔哩哔哩
+  emoji: [
+    'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/weibo',
+    'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/bilibili',
+  ],
+});
 ```
 
-## 举个栗子
+:::
 
-比如我们要用`Bilibili`的表情包:
+## 创建自己的预设
 
-``` js
-new Waline({
-  el:'#waline',
+除了 Waline 提供的预设外，你可以创建自己的预设。
+
+你需要将所有表情图片放置在一个可以访问的服务器文件夹上，之后在根目录创建 `info.json`，并设置如下选项:
+
+- `name`: Emoji 名称
+
+- `prefix` (可选的): Emoji 图片名称的通用前缀
+
+  当你设置了多个 Emoji 选项卡时，我们推荐你为同一个选项卡内的所有表情图片添加一个共用前缀，以防与其他 Emoji 缩写相冲突。
+
+- `type` (可选的): 图片的类型，会用作图片的后缀名
+
+  ::: warning
+
+  表情包应该是一套相同大小相同文件格式的图片。如果你的确需要使用不同类型的图片，请将此项留空并在之后的两个选项中手动指定后缀名。
+
+  :::
+
+- `icon`: 选项卡包含的图标的图片名 (要求同 `items`)
+
+- `items`: 数组，每项是图片不包含通用前缀的文件名 (不含扩展名)
+
+  ::: tip
+
+  数组的顺序既是表情排列的顺序。
+
+  :::
+
+### 例子
+
+我们假设你有如下文件:
+
+```
+https://example.com/myemoji/
+├─ my_laugh.png
+├─ my_cute.png
+├─ my_rage.png
+├─ my_sob.png
+└─ info.json
+```
+
+你的 info.json 可设置为:
+
+```json
+{
+  "name": "我的 Emoji",
+  "prefix": "my_",
+  "type": "png",
+  "icon": "cute",
+  "items": ["laugh", "sob", "rage", "cute"]
+}
+```
+
+这样你就可以在 `emoji` 选项中添加 `'https://example.com/myemoji'` 作为一个预设。(是否带 `/` 后缀随意)
+
+### 进阶
+
+我们更推荐你将图片上传到一个 GitHub 仓库，并为每次修改添加一个 tag。这样你可以使用 [cdn.jsdelivr.net](https://www.jsdelivr.com/) 上带有版本的 CDN 链接作为你的预设，其格式为 `https://cdn.jsdelivr.net/gh/user/repo@version/file`。绑定标签后，历史评论引用的图片链接将不会因为调整图片而失效。
+
+::: tip
+
+官方预设就使用了 [walinejs/emoji](https://walinejs/emoji) 的 `v1.0.0` 版本。
+
+:::
+
+## 使用配置对象
+
+除了在图片文件夹下创建 `info.json` 来创建预设，你可以直接在 `emoji` 选项中直接添加配置对象。
+
+配置对象的格式和 `info.json` 只有一点不同: 你应当额外添加 `folder` 选项为图片文件夹 (不应包含尾随 `/`)，以便 Waline 可以找到你的表情包。
+
+::: tip 例子
+
+假设你有下列文件结构:
+
+```
+https://example.com/myemoji/
+├─ my_laugh.png
+├─ my_cute.png
+├─ my_rage.png
+└─ my_sob.png
+```
+
+你可以直接添加
+
+```js
+{
+  name: "我的 Emoji",
+  link: "https://example.com/myemoji",
+  prefix: "my_",
+  type: "png",
+  icon: "cute",
+  items: ["laugh", "sob", "rage", "cute"]
+}
+```
+
+至 `emoji` 选项作为一个配置项。
+
+:::
+
+## 历史问题
+
+### Valine 兼容
+
+::: tip
+
+虽然 Waline 目前仍在兼容 Valine 的自定义表情写法，但此兼容会在未来版本中移除，请尽快迁移到 `emoji` 选项。
+
+:::
+
+使用 `emojiCDN` 设置 emoji 图片地址前缀，并使用 `emojiMaps` 设置表情 title 与图片的映射:
+
+```js
+Waline({
+  el: '#waline',
   serverURL: '<YOUR SERVER URL>',
 
-  // 设置Bilibili表情包地址
-  emojiCDN: '//i0.hdslb.com/bfs/emote/', 
-  // 表情title和图片映射
+  // 设置 CDN, 如微博表情 CDN
+  emojiCDN: 'https://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/',
+  // 表情 title 和图片映射
   emojiMaps: {
-    "tv_doge": "6ea59c827c414b4a2955fe79e0f6fd3dcd515e24.png",
-    "tv_亲亲": "a8111ad55953ef5e3be3327ef94eb4a39d535d06.png",
-    "tv_偷笑": "bb690d4107620f1c15cff29509db529a73aee261.png",
-    "tv_再见": "180129b8ea851044ce71caf55cc8ce44bd4a4fc8.png",
-    "tv_冷漠": "b9cbc755c2b3ee43be07ca13de84e5b699a3f101.png",
-    "tv_发怒": "34ba3cd204d5b05fec70ce08fa9fa0dd612409ff.png",
-    "tv_发财": "34db290afd2963723c6eb3c4560667db7253a21a.png",
-    "tv_可爱": "9e55fd9b500ac4b96613539f1ce2f9499e314ed9.png",
-    "tv_吐血": "09dd16a7aa59b77baa1155d47484409624470c77.png",
-    "tv_呆": "fe1179ebaa191569b0d31cecafe7a2cd1c951c9d.png",
-    "tv_呕吐": "9f996894a39e282ccf5e66856af49483f81870f3.png",
-    "tv_困": "241ee304e44c0af029adceb294399391e4737ef2.png",
-    "tv_坏笑": "1f0b87f731a671079842116e0991c91c2c88645a.png",
-    "tv_大佬": "093c1e2c490161aca397afc45573c877cdead616.png",
-    "tv_大哭": "23269aeb35f99daee28dda129676f6e9ea87934f.png",
-    "tv_委屈": "d04dba7b5465779e9755d2ab6f0a897b9b33bb77.png",
-    "tv_害羞": "a37683fb5642fa3ddfc7f4e5525fd13e42a2bdb1.png",
-    "tv_尴尬": "7cfa62dafc59798a3d3fb262d421eeeff166cfa4.png",
-    "tv_微笑": "70dc5c7b56f93eb61bddba11e28fb1d18fddcd4c.png",
-    "tv_思考": "90cf159733e558137ed20aa04d09964436f618a1.png",
-    "tv_惊吓": "0d15c7e2ee58e935adc6a7193ee042388adc22af.png",
+    smile: 'e3/2018new_weixioa02_org.png',
+    lovely: '09/2018new_keai_org.png',
     // ... 更多表情
-  } 
-})
+  },
+});
+```
+
+### 样式问题
+
+在历史版本中，由于 HTML 标签会被转义，Emoji 图片完全使用 Markdown 的图片语法，这导致历史版本的 Emoji 是由存粹的 `<img>` 标签进行渲染的。如果你使用了高清表情包，可能会产生显示大小问题。在 `@waline/client@0.16.0` 以后，表情 emoji 的大小被成功修复。
+
+如果你需要对历史版本的 Emoji 表情大小进行适配，你可以使用 CSS 选择器做到这一点:
+
+```css
+/* 你需要把 `https://img.t.sinajs.cn` 换成自己的 CDN */
+.v[data-class='v'] .vcontent img[src^="https://img.t.sinajs.cn"]
+{
+  width: 1.25em;
+  margin: 0.25em;
+  vertical-align: middle;
+}
 ```

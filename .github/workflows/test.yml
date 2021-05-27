@@ -1,0 +1,130 @@
+name: Test
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+
+      - name: restore node_modules
+        uses: actions/cache@v2.1.5
+        id: node-cache
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Get npm cache directory path
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        id: npm-cache-dir-path
+        run: echo "::set-output name=dir::$(npm config get cache)"
+
+      - name: npm-cache
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v2.1.5
+        id: npm-cache
+        with:
+          path: ${{ steps.npm-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Use npm v7
+        run: sudo npm i -g npm@7
+
+      - name: Install Deps
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        run: npm i
+
+      - name: Build test
+        run: |
+          npm run admin:build
+          npm run client:build
+
+  linter-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+
+      - name: restore node_modules
+        uses: actions/cache@v2.1.5
+        id: node-cache
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Get npm cache directory path
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        id: npm-cache-dir-path
+        run: echo "::set-output name=dir::$(npm config get cache)"
+
+      - name: npm-cache
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v2.1.5
+        id: npm-cache
+        with:
+          path: ${{ steps.npm-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Use npm v7
+        run: sudo npm i -g npm@7
+
+      - name: Install Deps
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        run: npm i
+
+      - name: Linter test
+        run: |
+          npm run lint:check
+
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+
+      - name: restore node_modules
+        uses: actions/cache@v2.1.5
+        id: node-cache
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Get npm cache directory path
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        id: npm-cache-dir-path
+        run: echo "::set-output name=dir::$(npm config get cache)"
+
+      - name: npm-cache
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v2.1.5
+        id: npm-cache
+        with:
+          path: ${{ steps.npm-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Use npm v7
+        run: sudo npm i -g npm@7
+
+      - name: Install Deps
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        run: npm i
+
+      - name: Unit test
+        run: |
+          npm run test

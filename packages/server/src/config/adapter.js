@@ -1,11 +1,13 @@
-const {Console} = require('think-logger3');
+const { Console } = require('think-logger3');
 const Mysql = require('think-model-mysql');
 const Postgresql = require('think-model-postgresql');
+
 let Sqlite = class {};
+
 try {
   Sqlite = require('think-model-sqlite');
-} catch(e) {
-  console.log(e);
+} catch (err) {
+  console.log(err);
 }
 
 const {
@@ -33,40 +35,56 @@ const {
   MONGO_REPLICASET,
   MONGO_USER,
 } = process.env;
+
 let type = 'common';
 let mongoOpt = {
   replicaSet: MONGO_REPLICASET,
-  authSource: MONGO_AUTHSOURCE
+  authSource: MONGO_AUTHSOURCE,
 };
-if(MONGO_DB) {
+
+if (MONGO_DB) {
   type = 'mongo';
-  for(const i in process.env) {
-    if(/MONGO_OPT_/.test(i)) {
-      const k = i.slice(10).toLocaleLowerCase().replace(/_([a-z])/g, (_, b) => b.toUpperCase());
-      mongoOpt[k] = process.env[i];
+  for (const envKeys in process.env) {
+    if (/MONGO_OPT_/.test(envKeys)) {
+      const key = envKeys
+        .slice(10)
+        .toLocaleLowerCase()
+        .replace(/_([a-z])/g, (_, b) => b.toUpperCase());
+      mongoOpt[key] = process.env[envKeys];
     }
   }
-} else if(PG_DB) {
+} else if (PG_DB) {
   type = 'postgresql';
-} else if(SQLITE_PATH) {
+} else if (SQLITE_PATH) {
   type = 'sqlite';
-} else if(MYSQL_DB) {
+} else if (MYSQL_DB) {
   type = 'mysql';
 }
+
 exports.model = {
   type,
   common: {
     logSql: true,
-    logger: msg => think.logger.info(msg)
+    logger: (msg) => think.logger.info(msg),
   },
+
   mongo: {
-    host: MONGO_HOST ? ( MONGO_HOST.startsWith('[') ? JSON.parse(MONGO_HOST) : MONGO_HOST ) : '127.0.0.1',
-    port: MONGO_PORT ? ( MONGO_PORT.startsWith('[') ? JSON.parse(MONGO_PORT) : MONGO_PORT ) :  27017,
+    host: MONGO_HOST
+      ? MONGO_HOST.startsWith('[')
+        ? JSON.parse(MONGO_HOST)
+        : MONGO_HOST
+      : '127.0.0.1',
+    port: MONGO_PORT
+      ? MONGO_PORT.startsWith('[')
+        ? JSON.parse(MONGO_PORT)
+        : MONGO_PORT
+      : 27017,
     user: MONGO_USER,
     password: MONGO_PASSWORD,
     database: MONGO_DB,
-    options: mongoOpt
+    options: mongoOpt,
   },
+
   postgresql: {
     handle: Postgresql,
     user: PG_USER,
@@ -75,15 +93,17 @@ exports.model = {
     host: PG_HOST || '127.0.0.1',
     port: PG_PORT || '3211',
     connectionLimit: 1,
-    prefix: PG_PREFIX || 'wl_'
+    prefix: PG_PREFIX || 'wl_',
   },
+
   sqlite: {
-    handle: Sqlite, 
+    handle: Sqlite,
     path: SQLITE_PATH,
     database: SQLITE_DB || 'waline',
     connectionLimit: 1,
-    prefix: SQLITE_PREFIX || 'wl_'
+    prefix: SQLITE_PREFIX || 'wl_',
   },
+
   mysql: {
     handle: Mysql,
     dateStrings: true,
@@ -93,9 +113,10 @@ exports.model = {
     user: MYSQL_USER,
     password: MYSQL_PASSWORD,
     prefix: MYSQL_PREFIX || 'wl_',
-    charset: MYSQL_CHARSET || 'utf8mb4'
-  }
+    charset: MYSQL_CHARSET || 'utf8mb4',
+  },
 };
+
 /**
  * logger adapter config
  * @type {Object}
@@ -103,6 +124,6 @@ exports.model = {
 exports.logger = {
   type: 'console',
   console: {
-    handle: Console
-  }
+    handle: Console,
+  },
 };
